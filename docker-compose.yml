@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://localhost:3001
+    depends_on:
+      - backend
+    networks:
+      - rick-morty-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - ./config.json:/app/config.json:ro
+      - ./data:/app/data
+    environment:
+      - NODE_ENV=development
+    networks:
+      - rick-morty-network
+
+networks:
+  rick-morty-network:
+    driver: bridge
+
+volumes:
+  node_modules_frontend:
+  node_modules_backend:

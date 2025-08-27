@@ -1,0 +1,42 @@
+{
+  "development": {
+    "frontend": {
+      "port": 5173,
+      "apiUrl": "http://localhost:3001"
+    },
+    "backend": {
+      "port": 3001,
+      "database": {
+        "path": "./data/characters.db",
+        "type": "sqlite"
+      },
+      "rickMortyApi": {
+        "baseUrl": "https://rickandmortyapi.com/api"
+      },
+      "cors": {
+        "origin": ["http://localhost:5173"],
+        "credentials": true
+      }
+    }
+  },
+  "production": {
+    "frontend": {
+      "port": 3000,
+      "apiUrl": "/api"
+    },
+    "backend": {
+      "port": 3001,
+      "database": {
+        "path": "./data/characters.db",
+        "type": "sqlite"
+      },
+      "rickMortyApi": {
+        "baseUrl": "https://rickandmortyapi.com/api"
+      },
+      "cors": {
+        "origin": ["*"],
+        "credentials": false
+      }
+    }
+  }
+}
