@@ -100,13 +100,11 @@ cd backend && npm test
 │   │   ├── services/       # API communication
 │   │   ├── utils/          # Helper functions
 │   │   └── constants/      # App constants
-│   └── __tests__/          # Test files
 ├── backend/                # Express API server
 │   ├── src/
 │   │   ├── controllers/    # Request handlers
 │   │   ├── services/       # Business logic
 │   │   ├── models/         # Database operations
 │   │   └── middleware/     # Express middleware
-│   └── __tests__/          # API tests
 └── docker-compose.yml      # Container configuration
 ```

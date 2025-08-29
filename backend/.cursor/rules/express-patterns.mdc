@@ -1,0 +1,52 @@
+# Backend Express Patterns
+
+## Architecture Layers
+
+- **Controllers** (`controllers/`) - HTTP request handlers
+- **Services** (`services/`) - Business logic
+- **Models** (`models/`) - Database operations
+- **Validation** (`schemas/`) - Joi validation schemas
+- **Routes** - API route definitions
+- **Middleware** (`middleware/`) - Error handling, validation
+
+## Request Flow
+
+```
+Request → Express App → Routes → Validation → Controller → Service → Model → Database
+```
+
+## API Endpoints (Implemented)
+
+- **GET /api/characters** - Get paginated character list
+- **POST /api/characters** - Create new character
+
+## Database Operations
+
+- Use Better-sqlite3 for database operations
+- Transform database rows to API format in models
+- Database file: `data/characters.db`
+
+## Error Handling
+
+- Use middleware/errorHandler.ts for centralized error handling
+- Return appropriate HTTP status codes
+- Log error details for debugging
+
+## File Organization
+
+- **Entry Point**: `src/index.ts` - initializes database and Express
+- **Configuration**: `config.json` - environment settings
+- **Database**: `src/database/` - schema and connection
+- **Controllers**: `src/controllers/` - HTTP handlers
+- **Services**: `src/services/` - business logic
+- **Models**: `src/models/` - database operations
+- **Routes**: `src/routes/` - API routes
+- **Middleware**: `src/middleware/` - Express middleware
+- **Schemas**: `src/schemas/` - Joi validation
+- **Types**: `src/types/` - TypeScript interfaces
+
+## Testing
+
+- Use Vitest + Supertest for API testing
+- Test each layer: controllers, services, models
+- Mock external dependencies

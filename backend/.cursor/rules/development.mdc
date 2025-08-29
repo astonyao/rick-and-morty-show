@@ -1,0 +1,45 @@
+# Backend Development
+
+## Development Commands
+
+```bash
+npm run dev  # Start server (port 3001)
+npm test     # Run tests
+npm run lint # Lint code
+npm run build # Build for production
+```
+
+## Database Management
+
+```bash
+cd scripts
+./print-all-characters.sh    # View all characters
+./search-character.sh "name" # Search characters
+./database-stats.sh         # Database statistics
+./reset-database.sh         # Reset database
+```
+
+## Key Files
+
+- **Entry Point**: `src/index.ts`
+- **Configuration**: `config.json`
+- **Database**: `src/database/` (schema.sql, connection.ts)
+- **Controllers**: `src/controllers/`
+- **Services**: `src/services/`
+- **Models**: `src/models/`
+- **Routes**: `src/routes/`
+- **Middleware**: `src/middleware/`
+
+## Development Workflow
+
+1. Start server: `npm run dev`
+2. Use database scripts for debugging
+3. Test API endpoints
+4. Run tests: `npm test`
+5. Lint code: `npm run lint`
+
+## Database
+
+- File: `data/characters.db`
+- Schema applied on startup
+- Sample data for development

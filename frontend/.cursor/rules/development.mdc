@@ -1,0 +1,40 @@
+# Frontend Development
+
+## Development Commands
+
+```bash
+npm run dev    # Start server (port 5173)
+npm test       # Run tests
+npm run lint   # Lint code
+npm run build  # Build for production
+npm run preview # Preview production build
+```
+
+## Key Files
+
+- **Entry Point**: `src/main.tsx`
+- **App Component**: `src/App.tsx`
+- **Context**: `src/context/AppContext.tsx`
+- **Components**: `src/components/`
+- **Services**: `src/services/` (api.ts, customCharacterApi.ts, rickMortyApi.ts)
+- **Types**: `src/types/character.ts`
+
+## Development Workflow
+
+1. Start server: `npm run dev`
+2. Make changes to components or context
+3. Test in browser
+4. Run tests: `npm test`
+5. Lint code: `npm run lint`
+6. Build: `npm run build`
+
+## Framework
+
+- React + Vite + TypeScript
+- Context state management with useReducer
+- API integration with custom services
+  description:
+  globs:
+  alwaysApply: true
+
+---

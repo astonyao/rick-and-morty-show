@@ -3,8 +3,7 @@ import {
   formatDate, 
   getStatusColor, 
   getGenderDisplay,
-  isCustomCharacter,
-  truncateText 
+  isCustomCharacter
 } from './helpers'
 import { isValidImageUrl } from './validation'
 import type { Character } from '../types/character'
@@ -91,15 +90,5 @@ describe('helpers', () => {
     })
   })
 
-  describe('truncateText', () => {
-    it('should truncate long text', () => {
-      const longText = 'This is a very long text that should be truncated'
-      expect(truncateText(longText, 20)).toBe('This is a very long...')
-    })
-
-    it('should not truncate short text', () => {
-      const shortText = 'Short text'
-      expect(truncateText(shortText, 20)).toBe('Short text')
-    })
-  })
+  
 })

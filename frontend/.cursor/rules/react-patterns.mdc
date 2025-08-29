@@ -1,0 +1,41 @@
+# Frontend React Patterns
+
+## Component Structure
+
+- Use functional components with TypeScript
+- Props interface at the top of each component
+- Component as named export
+- Use React hooks for state and side effects
+
+## State Management
+
+- **Context**: React Context with useReducer in `context/AppContext.tsx`
+- **Actions**: SET_RICK_MORTY_CHARACTERS, SET_CUSTOM_CHARACTERS, ADD_CUSTOM_CHARACTER
+- **State**: rickMortyCharacters, customCharacters, loading, error, currentPage, dataSource
+- **Data Sources**: Rick & Morty API (read-only) + Custom characters (CRUD)
+
+## Data Source Switching
+
+- Users can toggle between API-only, local-only, or combined views
+- Data source types: 'all', 'api', 'local'
+- Context-driven state for all character data and pagination
+
+## API Integration
+
+```
+Component → Context Hook → Data Source Helpers → API Service → Fetch API
+```
+
+## File Organization
+
+- **Components**: `components/` - Reusable React components
+- **Context**: `context/AppContext.tsx` - State management
+- **Services**: `services/` - API abstraction (api.ts, customCharacterApi.ts, rickMortyApi.ts)
+- **Utils**: `utils/dataSourceHelpers.ts` - Data source switching logic
+- **Types**: `types/character.ts` - TypeScript interfaces
+
+## Testing
+
+- Use Vitest + React Testing Library
+- Test component rendering and user interactions
+- Mock API calls and context providers

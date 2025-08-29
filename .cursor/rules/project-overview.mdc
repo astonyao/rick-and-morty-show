@@ -1,0 +1,38 @@
+# Rick & Morty Character Explorer
+
+## Project Overview
+
+Full-stack Rick & Morty character explorer with dual data sources: Rick & Morty API (read-only) and custom characters (CRUD).
+
+## Key Features
+
+- **Dual Data Sources**: Rick & Morty API + Custom characters
+- **Data Source Switching**: Toggle between API-only, local-only, or combined views
+- **Character Creation**: Create custom characters
+- **Pagination**: Efficient character list pagination
+
+## Technology Stack
+
+- **Backend**: Express.js + SQLite + TypeScript
+- **Frontend**: React + Vite + TypeScript
+- **Database**: SQLite with Better-sqlite3
+- **Testing**: Vitest + Supertest (backend) + React Testing Library (frontend)
+
+## Architecture
+
+- **Backend**: Layered architecture (controllers → services → models)
+- **Frontend**: React Context with useReducer for state management
+- **Type Safety**: TypeScript throughout the stack
+- **Validation**: Joi schemas for API validation
+
+## Project Structure
+
+- **Frontend**: `frontend/` - React app with Context state
+- **Backend**: `backend/` - Express API with SQLite
+- **Database**: `data/characters.db`
+- **Scripts**: `backend/scripts/` - Database management tools
+  description:
+  globs:
+  alwaysApply: true
+
+---

@@ -1,9 +1,9 @@
 import { getDatabase } from '../database/connection.js'
-import type { 
-  Character, 
-  CharacterRow, 
+import type {
+  Character,
+  CharacterRow,
   CreateCharacterRequest,
-  DatabaseResult 
+  DatabaseResult
 } from '../types/api.js'
 
 export class CharacterModel {
@@ -12,7 +12,7 @@ export class CharacterModel {
   // Transform database row to API format
   private transformRow(row: CharacterRow): Character {
     let episodeUrls: string[] = []
-    
+
     try {
       episodeUrls = JSON.parse(row.episode_urls || '[]')
     } catch (error) {
@@ -53,7 +53,7 @@ export class CharacterModel {
       const query = 'SELECT * FROM characters ORDER BY created DESC, id DESC LIMIT ? OFFSET ?'
       const stmt = this.db.prepare(query)
       const rows = stmt.all(limit, offset) as CharacterRow[]
-      
+
       const characters = rows.map(row => this.transformRow(row))
 
       return {
@@ -99,10 +99,10 @@ export class CharacterModel {
   async create(data: CreateCharacterRequest): Promise<DatabaseResult<Character>> {
     try {
       const episodeUrls = JSON.stringify(data.episode || [])
-      
+
       // Generate URL for the new character (will be updated with actual ID)
-      const baseUrl = process.env.API_BASE_URL || 'http://localhost:3001'
-      
+      const baseUrl = process.env['API_BASE_URL'] || 'http://localhost:3001'
+
       const stmt = this.db.prepare(`
         INSERT INTO characters (
           name, status, species, type, gender,

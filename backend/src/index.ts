@@ -23,7 +23,7 @@ try {
   process.exit(1)
 }
 
-const env = process.env.NODE_ENV || 'development'
+const env = process.env['NODE_ENV'] || 'development'
 const appConfig = config[env]?.backend
 
 if (!appConfig) {
@@ -31,7 +31,7 @@ if (!appConfig) {
   process.exit(1)
 }
 
-const PORT = process.env.PORT || appConfig.port || 3001
+const PORT = process.env['PORT'] || appConfig.port || 3001
 
 function startServer() {
   try {
