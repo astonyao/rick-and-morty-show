@@ -7,7 +7,8 @@ export function DataSourceSelector() {
   const dataSourceOptions = [
     { value: 'all', label: 'All Sources', description: 'Rick & Morty API + Local Database' },
     { value: 'api', label: 'API Only', description: 'Rick & Morty API only' },
-    { value: 'local', label: 'Local DB Only', description: 'Custom characters only' }
+    { value: 'local', label: 'Local DB Only', description: 'Custom characters only' },
+    { value: 'go', label: 'Go API', description: 'Go backend' }
   ]
 
   return (
@@ -18,7 +19,7 @@ export function DataSourceSelector() {
       <select
         id="data-source"
         value={dataSource}
-        onChange={(e) => setDataSource(e.target.value as 'all' | 'api' | 'local')}
+        onChange={(e) => setDataSource(e.target.value as 'all' | 'api' | 'local' | 'go')}
         className="block w-48 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-rick-green focus:border-rick-green sm:text-sm bg-white"
       >
         {dataSourceOptions.map((option) => (

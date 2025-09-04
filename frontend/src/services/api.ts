@@ -1,14 +1,25 @@
 import type { ApiResponse, ApiError } from '../types/character'
+import type { DataSource } from '../context/AppContext'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+const GO_API_BASE_URL = import.meta.env.VITE_GO_API_URL || 'http://localhost:8081'
 
 class ApiService {
+  private getBaseUrl(dataSource?: DataSource): string {
+    if (dataSource === 'go') {
+      return GO_API_BASE_URL
+    }
+    return API_BASE_URL
+  }
+
   private async request<T>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
+    dataSource?: DataSource
   ): Promise<ApiResponse<T>> {
     try {
-      const url = endpoint.startsWith('http') ? endpoint : `${API_BASE_URL}${endpoint}`
+      const baseUrl = this.getBaseUrl(dataSource)
+      const url = endpoint.startsWith('http') ? endpoint : `${baseUrl}${endpoint}`
       
       const response = await fetch(url, {
         headers: {
@@ -46,26 +57,26 @@ class ApiService {
     }
   }
 
-  async get<T>(endpoint: string): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, { method: 'GET' })
+  async get<T>(endpoint: string, dataSource?: DataSource): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, { method: 'GET' }, dataSource)
   }
 
-  async post<T>(endpoint: string, data: unknown): Promise<ApiResponse<T>> {
+  async post<T>(endpoint: string, data: unknown, dataSource?: DataSource): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: 'POST',
       body: JSON.stringify(data),
-    })
+    }, dataSource)
   }
 
-  async put<T>(endpoint: string, data: unknown): Promise<ApiResponse<T>> {
+  async put<T>(endpoint: string, data: unknown, dataSource?: DataSource): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: 'PUT',
       body: JSON.stringify(data),
-    })
+    }, dataSource)
   }
 
-  async delete<T>(endpoint: string): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, { method: 'DELETE' })
+  async delete<T>(endpoint: string, dataSource?: DataSource): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, { method: 'DELETE' }, dataSource)
   }
 }
 

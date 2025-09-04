@@ -79,3 +79,6 @@ desktop.ini
 .fuse_hidden*
 
 challenge.pdf
+backend-go/go.sum
+backend-go/go.mod
+backend-go/database/database.go

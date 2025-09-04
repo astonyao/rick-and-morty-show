@@ -6,6 +6,7 @@ import type {
 import {
   loadRickMortyCharactersForPage,
   loadAllCustomCharacters,
+  loadAllGoCharacters,
   createNewCustomCharacter,
   handleAsyncError,
   shouldLoadRickMortyData,
@@ -17,21 +18,23 @@ import {
 type CharacterAction =
   | { type: 'SET_RICK_MORTY_CHARACTERS'; payload: { characters: Character[]; totalPages: number } }
   | { type: 'SET_CUSTOM_CHARACTERS'; payload: Character[] }
+  | { type: 'SET_GO_CHARACTERS'; payload: Character[] }
   | { type: 'ADD_CUSTOM_CHARACTER'; payload: Character }
   | { type: 'SET_SELECTED_CHARACTER'; payload: Character | null }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: string }
   | { type: 'CLEAR_ERROR' }
   | { type: 'SET_CURRENT_PAGE'; payload: number }
-  | { type: 'SET_DATA_SOURCE'; payload: 'all' | 'api' | 'local' }
+  | { type: 'SET_DATA_SOURCE'; payload: 'all' | 'api' | 'local' | 'go' }
 
 // Data source types
-export type DataSource = 'all' | 'api' | 'local'
+export type DataSource = 'all' | 'api' | 'local' | 'go'
 
 // State interface
 interface CharacterState {
   rickMortyCharacters: Character[]
   customCharacters: Character[]
+  goCharacters: Character[]
   selectedCharacter: Character | null
   loading: boolean
   error: string | null
@@ -44,6 +47,7 @@ interface CharacterState {
 const initialState: CharacterState = {
   rickMortyCharacters: [],
   customCharacters: [],
+  goCharacters: [],
   selectedCharacter: null,
   loading: false,
   error: null,
@@ -66,6 +70,9 @@ function characterReducer(state: CharacterState, action: CharacterAction): Chara
 
     case 'SET_CUSTOM_CHARACTERS':
       return { ...state, customCharacters: action.payload, loading: false, error: null }
+
+    case 'SET_GO_CHARACTERS':
+      return { ...state, goCharacters: action.payload, loading: false, error: null }
 
     case 'ADD_CUSTOM_CHARACTER':
       return {
@@ -105,6 +112,7 @@ interface CharacterContextType extends CharacterState {
   addCustomCharacter: (character: Character) => void
   loadRickMortyCharacters: (page: number) => Promise<void>
   loadCustomCharacters: () => Promise<void>
+  loadGoCharacters: () => Promise<void>
   createCustomCharacter: (character: CreateCharacterRequest) => Promise<void>
   clearError: () => void
   goToNextPage: () => void
@@ -135,11 +143,6 @@ export function CharacterProvider({ children }: { children: ReactNode }) {
 
   // Async actions
   const loadRickMortyCharacters = useCallback(async (page: number) => {
-    // Only load Rick & Morty characters if data source supports it
-    if (!shouldLoadRickMortyData(state.dataSource)) {
-      return
-    }
-
     dispatch({ type: 'SET_LOADING', payload: true })
     dispatch({ type: 'SET_CURRENT_PAGE', payload: page })
 
@@ -155,14 +158,9 @@ export function CharacterProvider({ children }: { children: ReactNode }) {
         payload: handleAsyncError(error, 'Failed to load characters')
       })
     }
-  }, [state.dataSource])
+  }, []);
 
   const loadCustomCharacters = useCallback(async () => {
-    // Only load custom characters if data source supports it
-    if (!shouldLoadCustomData(state.dataSource)) {
-      return
-    }
-
     try {
       const characters = await loadAllCustomCharacters()
       dispatch({ type: 'SET_CUSTOM_CHARACTERS', payload: characters })
@@ -173,7 +171,20 @@ export function CharacterProvider({ children }: { children: ReactNode }) {
         dispatch({ type: 'SET_ERROR', payload: 'Failed to load custom characters' })
       }
     }
-  }, [state.dataSource])
+  }, []);
+
+  const loadGoCharacters = useCallback(async () => {
+    try {
+      const characters = await loadAllGoCharacters()
+      dispatch({ type: 'SET_GO_CHARACTERS', payload: characters })
+    } catch (error) {
+      // Only log and update error state if it's not an abort error
+      if (error instanceof Error && error.name !== 'AbortError') {
+        console.error('Failed to load Go characters:', error)
+        dispatch({ type: 'SET_ERROR', payload: 'Failed to load Go characters' })
+      }
+    }
+  }, []);
 
   const createCustomCharacter = useCallback(async (character: CreateCharacterRequest) => {
     dispatch({ type: 'SET_LOADING', payload: true })
@@ -227,6 +238,10 @@ export function CharacterProvider({ children }: { children: ReactNode }) {
     if (actions.loadCustom) {
       loadCustomCharacters()
     }
+
+    if (actions.loadGo) {
+      loadGoCharacters()
+    }
     
     if (actions.clearRickMorty) {
       dispatch({ type: 'SET_RICK_MORTY_CHARACTERS', payload: { characters: [], totalPages: 1 } })
@@ -234,6 +249,10 @@ export function CharacterProvider({ children }: { children: ReactNode }) {
     
     if (actions.clearCustom) {
       dispatch({ type: 'SET_CUSTOM_CHARACTERS', payload: [] })
+    }
+
+    if (actions.clearGo) {
+      dispatch({ type: 'SET_GO_CHARACTERS', payload: [] })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.currentPage])
@@ -244,6 +263,7 @@ export function CharacterProvider({ children }: { children: ReactNode }) {
     addCustomCharacter,
     loadRickMortyCharacters,
     loadCustomCharacters,
+    loadGoCharacters,
     createCustomCharacter,
     clearError,
     goToNextPage,

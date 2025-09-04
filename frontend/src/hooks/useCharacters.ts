@@ -5,6 +5,7 @@ export function useCharacters() {
   const {
     rickMortyCharacters,
     customCharacters,
+    goCharacters,
     loading,
     error,
     currentPage,
@@ -12,6 +13,7 @@ export function useCharacters() {
     dataSource,
     loadRickMortyCharacters,
     loadCustomCharacters,
+    loadGoCharacters,
     clearError,
     goToNextPage,
     goToPreviousPage,
@@ -21,7 +23,7 @@ export function useCharacters() {
 
   // Load Rick and Morty characters when currentPage changes (only if not local-only)
   useEffect(() => {
-    if (dataSource !== 'local') {
+    if (dataSource !== 'local' && dataSource !== 'go') {
       loadRickMortyCharacters(currentPage)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -29,8 +31,16 @@ export function useCharacters() {
 
   // Load custom characters on mount (only if not api-only)
   useEffect(() => {
-    if (dataSource !== 'api') {
+    if (dataSource !== 'api' && dataSource !== 'go') {
       loadCustomCharacters()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataSource])
+
+  // Load go characters on mount (only if go)
+  useEffect(() => {
+    if (dataSource === 'go') {
+      loadGoCharacters()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataSource])
@@ -44,14 +54,17 @@ export function useCharacters() {
         return rickMortyCharacters || []
       case 'local':
         return customCharacters || []
+      case 'go':
+        return goCharacters || []
       default:
         return []
     }
-  }, [dataSource, rickMortyCharacters, customCharacters])
+  }, [dataSource, rickMortyCharacters, customCharacters, goCharacters])
 
   return {
     rickMortyCharacters: rickMortyCharacters || [],
     customCharacters: customCharacters || [],
+    goCharacters: goCharacters || [],
     allCharacters: charactersToShow,
     charactersToShow,
     loading,
@@ -61,6 +74,7 @@ export function useCharacters() {
     dataSource,
     refetchRickMorty: () => loadRickMortyCharacters(currentPage),
     refetchCustom: loadCustomCharacters,
+    refetchGo: loadGoCharacters,
     clearError,
     goToNextPage,
     goToPreviousPage,
