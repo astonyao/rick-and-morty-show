@@ -53,12 +53,12 @@ cd frontend && npm run lint
 ### Backend (Express + SQLite + TypeScript)
 - **Entry Point**: `backend/src/index.ts` - initializes database, configures Express with security middleware
 - **Configuration**: Environment-specific config loaded from `config.json`
-- **Database**: SQLite with Better-sqlite3, schema in `database/schema.sql`, connection management in `database/connection.ts`
+- **Database**: SQLite with Better-sqlite3, schema in `backend/src/database/schema.sql`, connection management in `backend/src/database/connection.ts`
 - **API Structure**: 
-  - Controllers handle HTTP requests (`controllers/`)
-  - Services contain business logic (`services/`)
-  - Models handle database operations (`models/`)
-  - Validation using Joi schemas (`schemas/`)
+  - Controllers handle HTTP requests (`src/controllers/`)
+  - Services contain business logic (`src/services/`)
+  - Models handle database operations (`src/models/`)
+  - Validation using Joi schemas (`src/schemas/`)
 - **Routes**: Character CRUD operations at `/api/characters`
 - **Testing**: Vitest + Supertest for API testing
 
@@ -262,4 +262,4 @@ Context State Management
 ```
 
 ## Database Schema
-SQLite with single `characters` table for custom characters. Rick & Morty characters come from external API and are not persisted.
+SQLite database located at `data/characters.db` with single `characters` table for custom characters. Rick & Morty characters come from external API and are not persisted. Schema includes sample data for development.
